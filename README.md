@@ -1,4 +1,4 @@
-#生活記帳與分帳系統 (Shared Expense Splitter)
+# 生活記帳與分帳系統 (Shared Expense Splitter)
 
 這是一個以 Java 物件導向 (OOP) 概念開發的微型分帳系統，模擬真實世界中多重消費紀錄與帳務平分的商業邏輯。
 
