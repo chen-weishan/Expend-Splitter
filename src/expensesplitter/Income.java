@@ -3,18 +3,18 @@ package expensesplitter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Expense extends Transaction {
-	public Expense(String description, int totalAmount, Person payer) {
+public class Income extends Transaction {
+	public Income(String description, int totalAmount, Person payer) {
 		super(description, totalAmount, payer);
 	}
 
 	@Override
 	protected BigDecimal getAmountSign() {
-		return BigDecimal.ONE;
+		return new BigDecimal("-1");
 	}
 
 	@Override
 	protected RoundingMode getRoundingMode() {
-		return RoundingMode.CEILING;
+		return RoundingMode.FLOOR;
 	}
 }
