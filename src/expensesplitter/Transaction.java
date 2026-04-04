@@ -8,40 +8,43 @@ public abstract class Transaction {
 	protected String description;
 	protected BigDecimal totalAmount;
 	protected Person actor;
+	protected ArrayList<Person> participants;
 
-	public Transaction(String description, int totalAmount, Person actor) {
+	public Transaction(String description, int totalAmount, Person actor, ArrayList<Person> participants) {
 		this.description = description;
 		this.totalAmount = BigDecimal.valueOf(totalAmount);
 		this.actor = actor;
+		this.participants = participants;
+
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public BigDecimal getTotalAmount() {
-		return this.totalAmount;
+		return totalAmount;
 	}
 
 	public Person getActor() {
-		return this.actor;
+		return actor;
 	}
 
 	protected abstract BigDecimal getAmountSign();
 
 	protected abstract RoundingMode getRoundingMode();
 
-	public void split(ArrayList<Person> people) {
-		BigDecimal headcount = BigDecimal.valueOf(people.size());
-		BigDecimal baseExpenseForEach = this.totalAmount.divide(headcount, 0, getRoundingMode());
-		BigDecimal signedExpendForEach = baseExpenseForEach.multiply(getAmountSign());
-		for (Person p : people) {
-			if (p.getId().equals(this.actor.getId())) {
-				BigDecimal amountForActor=signedExpendForEach.multiply(headcount.subtract(BigDecimal.ONE));
-				p.addBalance(amountForActor);
-			} else {
-				p.subtractBalance(signedExpendForEach);
-			}
+	public void split() {
+		if (participants == null || participants.isEmpty()) {
+			return;
 		}
+		BigDecimal headcount = BigDecimal.valueOf(participants.size());
+		BigDecimal baseExpenseForEach = totalAmount.divide(headcount, 0, getRoundingMode());
+		BigDecimal signedExpendForEach = baseExpenseForEach.multiply(getAmountSign());
+		for(Person p:participants) {
+			p.subtractBalance(signedExpendForEach);
+		}
+		BigDecimal actualTotal = signedExpendForEach.multiply(headcount);
+		actor.addBalance(actualTotal);
 	}
 }

@@ -15,11 +15,11 @@ public class Person {
 	}
 
 	public String getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
@@ -27,14 +27,14 @@ public class Person {
 	}
 
 	public BigDecimal getBalance() {
-		return this.balance;
+		return balance;
 	}
 
 	public void addBalance(BigDecimal amount) {
-		this.balance = this.balance.add(amount);
+		balance = balance.add(amount);
 	}
 
 	public void subtractBalance(BigDecimal amount) {
-		this.balance = this.balance.subtract(amount);
+		balance = balance.subtract(amount);
 	}
 }

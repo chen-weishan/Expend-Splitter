@@ -1,5 +1,7 @@
 package expensesplitter;
 
+import java.util.ArrayList;
+
 public class TestExpenseSplitter {
 
 	public static void main(String[] args) {
@@ -10,17 +12,30 @@ public class TestExpenseSplitter {
 		group.addPerson(vincent);
 		group.addPerson(alice);
 		group.addPerson(bob);
-		Expense beef = new Expense("牛肉湯", 601, vincent);
-		Income deposit = new Income("房租押金", 2000, alice);
+		ArrayList<Person> allPeople =new ArrayList<>();
+		allPeople.add(vincent);
+		allPeople.add(alice);
+		allPeople.add(bob);
+		
+		Expense beef = new Expense("牛肉湯", 601, vincent, group.getAllPeople());
+		Income deposit = new Income("房租押金", 2000, alice, group.getAllPeople());
 		group.addTransactionAndSplitEqually(beef);
 		group.addTransactionAndSplitEqually(deposit);
-		render(vincent);
-		render(alice);
-		render(bob);
-		group.printSettlement();
+		
+		ArrayList<Person> drinkConsumers=new ArrayList<>();
+		drinkConsumers.add(alice);
+		drinkConsumers.add(bob);	
+		
+		Expense drinks = new Expense("飲料代墊",210,bob,drinkConsumers);
+		group.addTransactionAndSplitEqually(drinks);
+
+		result(group);
 	}
 
-	public static void render(Person p) {
+	public static void result(ExpenseManager group) {
+		for(Person p:group.getAllPeople()) {
 		System.out.println("目前的內部營損" + p.getName() + ": " + p.getBalance());
-	}
+		}
+		group.printSettlement();
+		}
 }

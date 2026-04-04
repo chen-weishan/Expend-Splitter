@@ -8,8 +8,8 @@ public class ExpenseManager {
 	private ArrayList<Transaction> transaction;
 
 	public ExpenseManager() {
-		this.people = new ArrayList<>();
-		this.transaction = new ArrayList<>();
+		people = new ArrayList<>();
+		transaction = new ArrayList<>();
 	}
 
 	public void addPerson(Person people) {
@@ -18,9 +18,13 @@ public class ExpenseManager {
 
 	public void addTransactionAndSplitEqually(Transaction transaction) {
 		this.transaction.add(transaction);
-		transaction.split(this.people);
+		transaction.split();
 	}
 
+	public ArrayList<Person> getAllPeople(){
+		return people;
+	}
+	
 	public void printSettlement() {
 		ArrayList<Person> debtors = new ArrayList<>();
 		ArrayList<Person> creditors = new ArrayList<>();
