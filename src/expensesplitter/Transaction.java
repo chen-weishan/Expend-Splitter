@@ -9,14 +9,16 @@ public class Transaction {
 	private BigDecimal totalAmount;
 	private Person actor;
 	private ArrayList<Person> participants;
-	
-	public Transaction(TransactionType type,String description, int totalAmount, Person actor, ArrayList<Person> participants) {
-		this.type=type;
+	private SplitStrategy strategy;
+
+	public Transaction(TransactionType type, String description, int totalAmount, Person actor,
+			ArrayList<Person> participants, SplitStrategy strategy) {
+		this.type = type;
 		this.description = description;
 		this.totalAmount = BigDecimal.valueOf(totalAmount);
 		this.actor = actor;
 		this.participants = participants;
-
+		this.strategy = strategy;
 	}
 
 	public String getDescription() {
@@ -32,16 +34,6 @@ public class Transaction {
 	}
 
 	public void split() {
-		if (participants == null || participants.isEmpty()) {
-			return;
-		}
-		BigDecimal headcount = BigDecimal.valueOf(participants.size());
-		BigDecimal baseExpenseForEach = totalAmount.divide(headcount, 0, type.getRoundingMode());
-		BigDecimal signedExpendForEach = baseExpenseForEach.multiply(type.getSign());
-		for(Person p:participants) {
-			p.subtractBalance(signedExpendForEach);
-		}
-		BigDecimal actualTotal = signedExpendForEach.multiply(headcount);
-		actor.addBalance(actualTotal);
+		strategy.executeSplit(totalAmount,actor,participants,type);
 	}
 }

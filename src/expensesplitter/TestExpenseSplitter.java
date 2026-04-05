@@ -2,37 +2,43 @@ package expensesplitter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestExpenseSplitter {
 
 	public static void main(String[] args) {
-		Person vincent = new Person("Vincent");
-		Person alice = new Person("Alice");
-		Person bob = new Person("Bob");
-		Person candy= new Person("Candy");
-		ExpenseManager group = new ExpenseManager();
-		group.addPerson(vincent);
-		group.addPerson(alice);
-		group.addPerson(bob);
-		group.addPerson(candy);
+		ArrayList<String> names =new ArrayList<>(List.of("vincent","alice","bob","candy"));
+		ExpenseManager group =new ExpenseManager();
+		buildGroup(group,names);
 		
-		Transaction beef = new Transaction(TransactionType.EXPENSE,"牛肉湯", 601, vincent, group.getAllPeople());
-		Transaction rice = new Transaction(TransactionType.EXPENSE,"豬油拌飯", 745, bob, group.getAllPeople());
-		Transaction deposit = new Transaction(TransactionType.INCOME,"房租押金", 200, alice, group.getAllPeople());
-		group.addTransactionAndSplitEqually(beef);
-		group.addTransactionAndSplitEqually(deposit);
-		group.addTransactionAndSplitEqually(rice);
+		EqualSplitStrategy equalSplit = new EqualSplitStrategy();
 		
 		ArrayList<Person> drinkConsumers=new ArrayList<>();
-		drinkConsumers.add(alice);
-		drinkConsumers.add(bob);	
+		drinkConsumers.add(group.getAllPeople().get(1));
+		drinkConsumers.add(group.getAllPeople().get(2));	
 		
-		Transaction drinks = new Transaction(TransactionType.EXPENSE,"飲料代墊",210,alice,drinkConsumers);
-		group.addTransactionAndSplitEqually(drinks);
+		Transaction beef = new Transaction(TransactionType.EXPENSE,"牛肉湯", 601, group.getAllPeople().get(0), group.getAllPeople(),equalSplit);
+		Transaction rice = new Transaction(TransactionType.EXPENSE,"豬油拌飯", 745, group.getAllPeople().get(1), group.getAllPeople(),equalSplit);
+		Transaction deposit = new Transaction(TransactionType.INCOME,"房租押金", 200, group.getAllPeople().get(2), group.getAllPeople(),equalSplit);
+		Transaction drinks = new Transaction(TransactionType.EXPENSE,"飲料代墊",210,group.getAllPeople().get(1),drinkConsumers,equalSplit);
+		ArrayList<Transaction> transactionList =new ArrayList<>(List.of(beef,rice,deposit,drinks));
+		addAndSplit(group, transactionList);
 
 		result(group);
 	}
 
+	public static void buildGroup(ExpenseManager group,ArrayList<String> names) {
+		for(String name:names) {
+			group.addPerson(new Person(name));
+		}
+	}
+	
+	public static void addAndSplit(ExpenseManager group,ArrayList<Transaction> transactionList) {
+		for(Transaction transaction:transactionList) {
+			group.addTransactionAndSplitEqually(transaction);
+		}
+	}
+	
 	public static void result(ExpenseManager group) {
 		BigDecimal balanceSum=BigDecimal.ZERO;
 		for(Person p:group.getAllPeople()) {
