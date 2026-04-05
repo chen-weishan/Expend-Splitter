@@ -1,16 +1,17 @@
 package expensesplitter;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public abstract class Transaction {
-	protected String description;
-	protected BigDecimal totalAmount;
-	protected Person actor;
-	protected ArrayList<Person> participants;
-
-	public Transaction(String description, int totalAmount, Person actor, ArrayList<Person> participants) {
+public class Transaction {
+	private TransactionType type;
+	private String description;
+	private BigDecimal totalAmount;
+	private Person actor;
+	private ArrayList<Person> participants;
+	
+	public Transaction(TransactionType type,String description, int totalAmount, Person actor, ArrayList<Person> participants) {
+		this.type=type;
 		this.description = description;
 		this.totalAmount = BigDecimal.valueOf(totalAmount);
 		this.actor = actor;
@@ -30,17 +31,13 @@ public abstract class Transaction {
 		return actor;
 	}
 
-	protected abstract BigDecimal getAmountSign();
-
-	protected abstract RoundingMode getRoundingMode();
-
 	public void split() {
 		if (participants == null || participants.isEmpty()) {
 			return;
 		}
 		BigDecimal headcount = BigDecimal.valueOf(participants.size());
-		BigDecimal baseExpenseForEach = totalAmount.divide(headcount, 0, getRoundingMode());
-		BigDecimal signedExpendForEach = baseExpenseForEach.multiply(getAmountSign());
+		BigDecimal baseExpenseForEach = totalAmount.divide(headcount, 0, type.getRoundingMode());
+		BigDecimal signedExpendForEach = baseExpenseForEach.multiply(type.getSign());
 		for(Person p:participants) {
 			p.subtractBalance(signedExpendForEach);
 		}
