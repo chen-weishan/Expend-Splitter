@@ -21,10 +21,10 @@ public class ExpenseManager {
 		transaction.split();
 	}
 
-	public ArrayList<Person> getAllPeople(){
+	public ArrayList<Person> getAllPeople() {
 		return people;
 	}
-	
+
 	public void printSettlement() {
 		ArrayList<Person> debtors = new ArrayList<>();
 		ArrayList<Person> creditors = new ArrayList<>();

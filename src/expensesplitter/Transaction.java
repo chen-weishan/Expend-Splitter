@@ -34,6 +34,6 @@ public class Transaction {
 	}
 
 	public void split() {
-		strategy.executeSplit(totalAmount,actor,participants,type);
+		strategy.executeSplit(type,totalAmount,actor,participants);
 	}
 }

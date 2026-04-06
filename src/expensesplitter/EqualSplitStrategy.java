@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class EqualSplitStrategy implements SplitStrategy {
-	public void executeSplit(BigDecimal totalAmount, Person actor, ArrayList<Person> participants,
-			TransactionType type) {
+	public void executeSplit(TransactionType type, BigDecimal totalAmount, Person actor,
+			ArrayList<Person> participants) {
 		if (participants == null || participants.isEmpty()) {
 			return;
 		}
