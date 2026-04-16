@@ -16,7 +16,7 @@ public class ExpenseManager {
 		this.people.add(people);
 	}
 
-	public void addTransactionAndSplitEqually(Transaction transaction) {
+	public void addTransactionAndSplit(Transaction transaction) {
 		this.transaction.add(transaction);
 		transaction.split();
 	}

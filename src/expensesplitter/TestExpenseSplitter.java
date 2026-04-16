@@ -54,7 +54,7 @@ public class TestExpenseSplitter {
 
 	public static void addAndSplit(ExpenseManager group, ArrayList<Transaction> transactionList) {
 		for (Transaction transaction : transactionList) {
-			group.addTransactionAndSplitEqually(transaction);
+			group.addTransactionAndSplit(transaction);
 		}
 	}
 
