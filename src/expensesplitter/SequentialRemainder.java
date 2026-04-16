@@ -12,7 +12,7 @@ public class SequentialRemainder implements RemainderStrategy {
 			signRemainder = BigDecimal.valueOf(-1);
 		}
 		for (int i = 0; i < headcount; i++) {
-			if (BigDecimal.valueOf(i).compareTo(remainder) <= 0) {
+			if (BigDecimal.valueOf(i).compareTo(remainder.abs()) < 0) {
 				sequentialAllocate.add(signRemainder);
 			} else {
 				sequentialAllocate.add(BigDecimal.ZERO);

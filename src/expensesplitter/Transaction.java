@@ -15,7 +15,7 @@ public class Transaction {
 			ArrayList<Person> participants, SplitStrategy strategy) {
 		this.type = type;
 		this.description = description;
-		this.totalAmount = BigDecimal.valueOf(totalAmount);
+		this.totalAmount = BigDecimal.valueOf(Math.abs(totalAmount));
 		this.actor = actor;
 		this.participants = participants;
 		this.strategy = strategy;
